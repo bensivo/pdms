@@ -1,0 +1,21 @@
+<nz-layout class="app-layout">
+  <nz-sider class="app-sider" nzWidth="256px">
+    <div class="logo">logo</div>
+    <ul nz-menu
+        nzTheme="dark"
+        nzMode="inline"
+        [nzInlineIndent]="24">
+      <li nz-menu-item nzMatchRouter>
+        <a routerLink="/home">Home</a>
+      </li>
+      <li nz-menu-item nzMatchRouter>
+        <a routerLink="/config">Configuration</a>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-layout class="app-main-layout">
+    <nz-content class="app-content">
+      <router-outlet></router-outlet>
+    </nz-content>
+  </nz-layout>
+</nz-layout>

@@ -1,0 +1,104 @@
+.config-container {
+  h1 {
+    margin: 0 0 8px 0;
+    font-size: 28px;
+    font-weight: 500;
+  }
+
+  > p {
+    margin: 0 0 32px 0;
+    color: #666;
+    font-size: 16px;
+  }
+}
+
+.entities-section {
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+
+    h2 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 500;
+    }
+  }
+
+  .empty-state {
+    padding: 40px 20px;
+    text-align: center;
+  }
+
+  .entities-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .entity-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    border: 1px solid #f0f0f0;
+    border-radius: 4px;
+    background: #fafafa;
+
+    .entity-info {
+      h3 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      .plural-name {
+        margin: 4px 0 0 0;
+        color: #999;
+        font-size: 14px;
+      }
+    }
+
+    .entity-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+  }
+}
+
+.modal-form {
+  .form-group {
+    margin-bottom: 20px;
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    input {
+      width: 100%;
+    }
+  }
+
+  .key-preview {
+    padding: 12px;
+    background: #f5f5f5;
+    border-radius: 4px;
+    margin-top: 16px;
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .key-value {
+      font-family: monospace;
+      color: #666;
+      font-size: 14px;
+    }
+  }
+}

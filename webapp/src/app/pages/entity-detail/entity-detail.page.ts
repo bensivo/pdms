@@ -1,0 +1,98 @@
+import { Component, OnInit, computed, signal } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
+import { Entity, FieldType } from '../../models/entity.model';
+import { EntityService } from '../../services/entity.service';
+import { generateEntityKey } from '../../services/entity-key.util';
+
+@Component({
+  selector: 'app-entity-detail-page',
+  imports: [
+    CommonModule,
+    FormsModule,
+    NzCardModule,
+    NzButtonModule,
+    NzInputModule,
+    NzSelectModule,
+    NzModalModule,
+    NzEmptyModule
+  ],
+  templateUrl: './entity-detail.page.html',
+  styleUrl: './entity-detail.page.less'
+})
+export class EntityDetailPageComponent implements OnInit {
+  private entityKeySignal = signal<string>('');
+  entity$ = computed(() => {
+    const key = this.entityKeySignal();
+    const entities = this.entityService.entities$();
+    return entities.find(e => generateEntityKey(e.name) === key);
+  });
+
+  showAddFieldModal = signal(false);
+
+  newFieldName = '';
+  newFieldType: FieldType = 'short-text';
+
+  fieldTypeOptions: { label: string; value: FieldType }[] = [
+    { label: 'Short Text', value: 'short-text' },
+    { label: 'Long Text', value: 'long-text' },
+    { label: 'Number', value: 'number' },
+    { label: 'Option', value: 'option' },
+    { label: 'Ordered Option', value: 'ordered-option' },
+    { label: 'Reference', value: 'reference' }
+  ];
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private entityService: EntityService
+  ) {}
+
+  ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      const key = params['key'];
+      this.entityKeySignal.set(key);
+      if (!this.entity$()) {
+        this.router.navigate(['/config']);
+      }
+    });
+  }
+
+  onClickBackButton(): void {
+    this.router.navigate(['/config']);
+  }
+
+  onClickAddFieldButton(): void {
+    this.newFieldName = '';
+    this.newFieldType = 'short-text';
+    this.showAddFieldModal.set(true);
+  }
+
+  onClickConfirmAddFieldButton(): void {
+    const entity = this.entity$();
+    if (!entity || !this.newFieldName) {
+      return;
+    }
+    this.entityService.addField(entity.id, this.newFieldName, this.newFieldType);
+    this.showAddFieldModal.set(false);
+  }
+
+  onClickRemoveFieldButton(fieldId: string): void {
+    const entity = this.entity$();
+    if (!entity) {
+      return;
+    }
+    this.entityService.removeField(entity.id, fieldId);
+  }
+
+  getFieldTypeLabel(type: FieldType): string {
+    return this.fieldTypeOptions.find(opt => opt.value === type)?.label || type;
+  }
+}

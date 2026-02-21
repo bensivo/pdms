@@ -1,0 +1,76 @@
+<div class="config-container">
+  <h1>Configuration</h1>
+  <p>Manage workspace entities, fields, and relationships</p>
+
+  <!-- Entities Section -->
+  <nz-card class="entities-section">
+    <div class="section-header">
+      <h2>Entities</h2>
+      <button nz-button nzType="primary" (click)="onClickAddEntityButton()">
+        + Add Entity
+      </button>
+    </div>
+
+    <div *ngIf="entities$().length === 0; else entitiesList" class="empty-state">
+      <nz-empty nzNotFoundContent="No entities created yet"></nz-empty>
+    </div>
+
+    <ng-template #entitiesList>
+      <div class="entities-list">
+        <div *ngFor="let entity of entities$()" class="entity-item">
+          <div class="entity-info">
+            <h3>{{ entity.name }}</h3>
+            <p class="plural-name">{{ entity.pluralName }}</p>
+          </div>
+          <div class="entity-actions">
+            <a [routerLink]="['/config/entity', getEntityKey(entity.name)]" nz-button nzType="primary">
+              Configure
+            </a>
+            <button
+              nz-button
+              nzDanger
+              nzType="text"
+              (click)="onClickDeleteEntityButton(entity.id)"
+              nzSize="small">
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </nz-card>
+
+  <!-- Create Entity Modal -->
+  <nz-modal
+    [(nzVisible)]="showCreateEntityModal"
+    nzTitle="Create New Entity"
+    (nzOnOk)="onClickCreateEntityButton()"
+    (nzOnCancel)="showCreateEntityModal.set(false)">
+    <ng-container *nzModalContent>
+      <div class="modal-form">
+        <div class="form-group">
+          <label>Entity Name</label>
+          <input
+            nz-input
+            placeholder="e.g., Customer"
+            [(ngModel)]="newEntityName"
+            name="entityName" />
+        </div>
+
+        <div class="form-group">
+          <label>Plural Name</label>
+          <input
+            nz-input
+            placeholder="e.g., Customers"
+            [(ngModel)]="newEntityPluralName"
+            name="entityPluralName" />
+        </div>
+
+        <div *ngIf="newEntityName" class="key-preview">
+          <label>URL Key</label>
+          <div class="key-value">/config/entity/<strong>{{ getEntityKeyPreview() }}</strong></div>
+        </div>
+      </div>
+    </ng-container>
+  </nz-modal>
+</div>

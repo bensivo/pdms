@@ -1,0 +1,83 @@
+<div class="entity-detail-container">
+  <div class="page-header">
+    <button nz-button nzType="text" (click)="onClickBackButton()">← Back</button>
+  </div>
+
+  <div *ngIf="entity$()" class="entity-details">
+    <h1>{{ entity$()!.name }}</h1>
+    <p class="subtitle">{{ entity$()!.pluralName }}</p>
+
+    <nz-card class="fields-card">
+      <div class="section-header">
+        <h2>Fields</h2>
+        <button nz-button nzType="primary" (click)="onClickAddFieldButton()">
+          + Add Field
+        </button>
+      </div>
+
+      <div *ngIf="entity$()!.fields.length === 0" class="empty-state">
+        <nz-empty nzNotFoundContent="No fields defined"></nz-empty>
+      </div>
+
+      <table *ngIf="entity$()!.fields.length > 0" class="fields-table">
+        <thead>
+          <tr>
+            <th>Field Name</th>
+            <th>Type</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let field of entity$()!.fields">
+            <td>{{ field.name }}</td>
+            <td>{{ getFieldTypeLabel(field.type) }}</td>
+            <td>
+              <button
+                nz-button
+                nzDanger
+                nzType="text"
+                nzSize="small"
+                (click)="onClickRemoveFieldButton(field.id)">
+                Remove
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </nz-card>
+  </div>
+
+  <!-- Add Field Modal -->
+  <nz-modal
+    [(nzVisible)]="showAddFieldModal"
+    nzTitle="Add Field"
+    (nzOnOk)="onClickConfirmAddFieldButton()"
+    (nzOnCancel)="showAddFieldModal.set(false)">
+    <ng-container *nzModalContent>
+      <div class="modal-form">
+        <div class="form-group">
+          <label>Field Name</label>
+          <input
+            nz-input
+            placeholder="e.g., First Name"
+            [(ngModel)]="newFieldName"
+            name="fieldName" />
+        </div>
+
+        <div class="form-group">
+          <label>Field Type</label>
+          <select
+            nz-select
+            [(ngModel)]="newFieldType"
+            name="fieldType">
+            <option
+              *ngFor="let option of fieldTypeOptions"
+              [value]="option.value">
+              {{ option.label }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </ng-container>
+  </nz-modal>
+</div>
