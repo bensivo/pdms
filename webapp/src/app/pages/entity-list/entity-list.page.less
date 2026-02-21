@@ -1,0 +1,70 @@
+.entity-list-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .entity-list {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+
+    h1 {
+      margin: 0;
+      font-size: 32px;
+      font-weight: 500;
+    }
+  }
+
+  .list-toolbar {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+
+    .search-input {
+      width: 300px;
+    }
+
+    button {
+      background: #f5f5f5;
+    }
+  }
+
+  .records-list {
+    flex: 1;
+    background: #fff;
+    border-radius: 4px;
+
+    .empty-state {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+    }
+
+    .record-row {
+      padding: 16px;
+      border-bottom: 1px solid #f0f0f0;
+      min-height: 64px;
+      background: #fafafa;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background: #f5f5f5;
+      }
+
+      &:first-child {
+        border-top: 1px solid #f0f0f0;
+      }
+    }
+  }
+}

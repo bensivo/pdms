@@ -12,7 +12,7 @@ import { EntityService } from '../../services/entity.service';
 import { generateEntityKey } from '../../services/entity-key.util';
 
 @Component({
-  selector: 'app-config-page',
+  selector: 'app-workspace-config-page',
   imports: [
     CommonModule,
     FormsModule,
@@ -24,10 +24,10 @@ import { generateEntityKey } from '../../services/entity-key.util';
     NzModalModule,
     NzEmptyModule
   ],
-  templateUrl: './config.page.html',
-  styleUrl: './config.page.less'
+  templateUrl: './workspace-config.page.html',
+  styleUrl: './workspace-config.page.less'
 })
-export class ConfigPageComponent {
+export class WorkspaceConfigPageComponent {
   showCreateEntityModal = signal(false);
 
   newEntityName = '';

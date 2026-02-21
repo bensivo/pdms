@@ -1,0 +1,28 @@
+<div class="entity-list-container">
+  <div *ngIf="entity$()" class="entity-list">
+    <!-- Header -->
+    <div class="list-header">
+      <h1>{{ entity$()!.pluralName }}</h1>
+      <button nz-button nzType="primary" nzSize="large">+ New</button>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="list-toolbar">
+      <input
+        nz-input
+        class="search-input"
+        nzSize="large"
+        placeholder="Search..."
+        type="text" />
+      <button nz-button nzSize="large">View Type</button>
+      <button nz-button nzSize="large">Filter</button>
+    </div>
+
+    <!-- Records List -->
+    <div class="records-list">
+      <div class="empty-state">
+        <nz-empty nzNotFoundContent="No records yet"></nz-empty>
+      </div>
+    </div>
+  </div>
+</div>

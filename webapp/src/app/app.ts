@@ -1,12 +1,25 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { EntityService } from './services/entity.service';
+import { generateEntityKey } from './services/entity-key.util';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterLink, RouterOutlet, NzLayoutModule, NzMenuModule],
+  imports: [CommonModule, RouterLink, RouterOutlet, NzLayoutModule, NzMenuModule],
   templateUrl: './app.html',
   styleUrl: './app.less'
 })
-export class App {}
+export class App {
+  constructor(private entityService: EntityService) {}
+
+  get entities$() {
+    return this.entityService.entities$;
+  }
+
+  getEntityKey(name: string): string {
+    return generateEntityKey(name);
+  }
+}

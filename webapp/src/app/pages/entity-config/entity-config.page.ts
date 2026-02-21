@@ -13,7 +13,7 @@ import { EntityService } from '../../services/entity.service';
 import { generateEntityKey } from '../../services/entity-key.util';
 
 @Component({
-  selector: 'app-entity-detail-page',
+  selector: 'app-entity-config-page',
   imports: [
     CommonModule,
     FormsModule,
@@ -24,10 +24,10 @@ import { generateEntityKey } from '../../services/entity-key.util';
     NzModalModule,
     NzEmptyModule
   ],
-  templateUrl: './entity-detail.page.html',
-  styleUrl: './entity-detail.page.less'
+  templateUrl: './entity-config.page.html',
+  styleUrl: './entity-config.page.less'
 })
-export class EntityDetailPageComponent implements OnInit {
+export class EntityConfigPageComponent implements OnInit {
   private entityKeySignal = signal<string>('');
   entity$ = computed(() => {
     const key = this.entityKeySignal();
@@ -60,13 +60,13 @@ export class EntityDetailPageComponent implements OnInit {
       const key = params['key'];
       this.entityKeySignal.set(key);
       if (!this.entity$()) {
-        this.router.navigate(['/config']);
+        this.router.navigate(['/workspace-config']);
       }
     });
   }
 
   onClickBackButton(): void {
-    this.router.navigate(['/config']);
+    this.router.navigate(['/workspace-config']);
   }
 
   onClickAddFieldButton(): void {
