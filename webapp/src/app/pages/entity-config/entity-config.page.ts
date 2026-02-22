@@ -1,16 +1,16 @@
-import { Component, OnInit, computed, signal } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NzCardModule } from 'ng-zorro-antd/card';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzSelectModule } from 'ng-zorro-antd/select';
-import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
-import { Entity, FieldType } from '../../models/entity.model';
-import { EntityService } from '../../services/entity.service';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { FieldType } from '../../models/entity.model';
 import { generateEntityKey } from '../../services/entity-key.util';
+import { EntityService } from '../../services/entity.service';
 
 @Component({
   selector: 'app-entity-config-page',
@@ -44,9 +44,6 @@ export class EntityConfigPageComponent implements OnInit {
     { label: 'Short Text', value: 'short-text' },
     { label: 'Long Text', value: 'long-text' },
     { label: 'Number', value: 'number' },
-    { label: 'Option', value: 'option' },
-    { label: 'Ordered Option', value: 'ordered-option' },
-    { label: 'Reference', value: 'reference' }
   ];
 
   constructor(

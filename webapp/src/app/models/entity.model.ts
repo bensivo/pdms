@@ -1,4 +1,4 @@
-export type FieldType = 'short-text' | 'long-text' | 'number' | 'option' | 'ordered-option' | 'reference';
+export type FieldType = 'short-text' | 'long-text' | 'number' ;
 
 export interface EntityField {
   id: string;
