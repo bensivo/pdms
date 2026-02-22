@@ -6,9 +6,12 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 
 import { EntityService } from '../../services/entity.service';
 import { EntityRecordService } from '../../services/entity-record.service';
+import { EntityStore } from '../../store/entity.store';
+import { EntityField } from '../../models/entity.model';
 import { generateEntityKey } from '../../services/entity-key.util';
 
 @Component({
@@ -19,7 +22,8 @@ import { generateEntityKey } from '../../services/entity-key.util';
         NzButtonModule,
         NzInputModule,
         NzFormModule,
-        NzCardModule
+        NzCardModule,
+        NzSelectModule
     ],
     templateUrl: './entity-create.page.html',
     styleUrl: './entity-create.page.less'
@@ -42,8 +46,18 @@ export class EntityCreatePageComponent implements OnInit, AfterViewInit {
         private route: ActivatedRoute,
         private router: Router,
         private entityService: EntityService,
-        private entityRecordService: EntityRecordService
+        private entityRecordService: EntityRecordService,
+        private entityStore: EntityStore
     ) {}
+
+    getReferencedRecordOptions(field: EntityField): { label: string; value: string }[] {
+        if (!field.referenceEntityId) return [];
+        const referencedRecords = this.entityRecordService.getByEntityId(field.referenceEntityId);
+        return referencedRecords.map(record => ({
+            label: this.entityRecordService.getRecordDisplayName(field.referenceEntityId!, record.id),
+            value: record.id
+        }));
+    }
 
     ngOnInit(): void {
         this.route.params.subscribe(params => {

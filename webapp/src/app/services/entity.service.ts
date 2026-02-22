@@ -29,14 +29,15 @@ export class EntityService {
     return entity;
   }
 
-  addField(entityId: string, fieldName: string, fieldType: string): void {
+  addField(entityId: string, fieldName: string, fieldType: string, referenceEntityId?: string): void {
     const entity = this.entityStore.getById(entityId);
     if (!entity) return;
 
     const field: EntityField = {
       id: this.generateId(),
       name: fieldName,
-      type: fieldType as any
+      type: fieldType as any,
+      referenceEntityId
     };
 
     this.entityStore.update(entityId, {
@@ -55,6 +56,10 @@ export class EntityService {
 
   deleteEntity(id: string): void {
     this.entityStore.remove(id);
+  }
+
+  setDisplayNameField(entityId: string, fieldId: string): void {
+    this.entityStore.update(entityId, { displayNameFieldId: fieldId });
   }
 
   private generateId(): string {

@@ -22,9 +22,18 @@
         <div class="field-label">{{ field.name }}</div>
         <div class="field-value">
           <!-- View mode -->
-          <span *ngIf="!isEditMode()">
-            {{ getFieldValue(field.id) || '—' }}
-          </span>
+          <ng-container *ngIf="!isEditMode()">
+            <!-- Reference field: show as link -->
+            <a *ngIf="field.type === 'reference' && getFieldValue(field.id)"
+              [routerLink]="['/entity', getReferencedEntityRouteKey(field), getFieldValue(field.id)]">
+              {{ getReferencedRecordDisplayName(field, getFieldValue(field.id)) }}
+            </a>
+            <span *ngIf="field.type === 'reference' && !getFieldValue(field.id)">—</span>
+            <!-- Non-reference fields: show as text -->
+            <span *ngIf="field.type !== 'reference'">
+              {{ getFieldValue(field.id) || '—' }}
+            </span>
+          </ng-container>
 
           <!-- Edit mode: long-text gets textarea -->
           <textarea
@@ -36,9 +45,22 @@
             [name]="field.id">
           </textarea>
 
+          <!-- Edit mode: reference fields get select -->
+          <nz-select *ngIf="isEditMode() && field.type === 'reference'"
+            nzPlaceHolder="Select..."
+            [ngModel]="getEditValue(field.id)"
+            (ngModelChange)="setEditValue(field.id, $event)"
+            [name]="field.id">
+            <nz-option
+              *ngFor="let opt of getReferencedRecordOptions(field)"
+              [nzValue]="opt.value"
+              [nzLabel]="opt.label">
+            </nz-option>
+          </nz-select>
+
           <!-- Edit mode: all other types get a standard input -->
           <input
-            *ngIf="isEditMode() && field.type !== 'long-text'"
+            *ngIf="isEditMode() && field.type !== 'long-text' && field.type !== 'reference'"
             nz-input
             [type]="field.type === 'number' ? 'number' : 'text'"
             [ngModel]="getEditValue(field.id)"

@@ -2,10 +2,14 @@ import { Injectable } from '@angular/core';
 
 import { EntityRecord } from '../models/entity-record.model';
 import { EntityRecordStore } from '../store/entity-record.store';
+import { EntityStore } from '../store/entity.store';
 
 @Injectable({ providedIn: 'root' })
 export class EntityRecordService {
-    constructor(private entityRecordStore: EntityRecordStore) {}
+    constructor(
+        private entityRecordStore: EntityRecordStore,
+        private entityStore: EntityStore
+    ) {}
 
     get records$() {
         return this.entityRecordStore.records$;
@@ -58,6 +62,30 @@ export class EntityRecordService {
      */
     deleteRecord(id: string): void {
         this.entityRecordStore.remove(id);
+    }
+
+    /**
+     * Gets the display name for a record based on the entity's displayNameFieldId.
+     *
+     * @param entityId - The ID of the entity
+     * @param recordId - The ID of the record
+     * @returns The display name string, or recordId as fallback
+     */
+    getRecordDisplayName(entityId: string, recordId: string): string {
+        const entity = this.entityStore.getById(entityId);
+        const record = this.entityRecordStore.getById(recordId);
+
+        if (!entity || !record) {
+            return recordId;
+        }
+
+        // Use the displayNameFieldId if set, otherwise use first field
+        const displayFieldId = entity.displayNameFieldId || entity.fields[0]?.id;
+        if (!displayFieldId) {
+            return recordId;
+        }
+
+        return record.data[displayFieldId] || recordId;
     }
 
     private generateId(): string {

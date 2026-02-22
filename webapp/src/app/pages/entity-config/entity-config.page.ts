@@ -39,12 +39,20 @@ export class EntityConfigPageComponent implements OnInit {
 
   newFieldName = '';
   newFieldType: FieldType = 'short-text';
+  newFieldReferenceEntityId = '';
 
   fieldTypeOptions: { label: string; value: FieldType }[] = [
     { label: 'Short Text', value: 'short-text' },
     { label: 'Long Text', value: 'long-text' },
     { label: 'Number', value: 'number' },
+    { label: 'Reference', value: 'reference' },
   ];
+
+  referencableEntities$ = computed(() => {
+    const entity = this.entity$();
+    if (!entity) return [];
+    return this.entityService.entities$().filter(e => e.id !== entity.id);
+  });
 
   constructor(
     private route: ActivatedRoute,
@@ -69,6 +77,7 @@ export class EntityConfigPageComponent implements OnInit {
   onClickAddFieldButton(): void {
     this.newFieldName = '';
     this.newFieldType = 'short-text';
+    this.newFieldReferenceEntityId = '';
     this.showAddFieldModal.set(true);
   }
 
@@ -77,7 +86,8 @@ export class EntityConfigPageComponent implements OnInit {
     if (!entity || !this.newFieldName) {
       return;
     }
-    this.entityService.addField(entity.id, this.newFieldName, this.newFieldType);
+    const referenceEntityId = this.newFieldType === 'reference' ? this.newFieldReferenceEntityId : undefined;
+    this.entityService.addField(entity.id, this.newFieldName, this.newFieldType, referenceEntityId);
     this.showAddFieldModal.set(false);
   }
 
@@ -91,5 +101,11 @@ export class EntityConfigPageComponent implements OnInit {
 
   getFieldTypeLabel(type: FieldType): string {
     return this.fieldTypeOptions.find(opt => opt.value === type)?.label || type;
+  }
+
+  onChangeDisplayNameField(fieldId: string): void {
+    const entity = this.entity$();
+    if (!entity) return;
+    this.entityService.setDisplayNameField(entity.id, fieldId);
   }
 }

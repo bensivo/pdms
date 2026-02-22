@@ -44,7 +44,16 @@
         <tr *ngFor="let record of recordTable.data"
           class="record-row"
           (click)="onClickRecordRow(record.id)">
-          <td *ngFor="let field of visibleFields$()">{{ record.data[field.id] || '-' }}</td>
+          <td *ngFor="let field of visibleFields$()">
+            <a *ngIf="isReferenceField(field) && record.data[field.id]"
+              [routerLink]="['/entity', getReferencedEntityRouteKey(field), record.data[field.id]]"
+              (click)="$event.stopPropagation()">
+              {{ getFieldDisplayValue(field, record) }}
+            </a>
+            <span *ngIf="!isReferenceField(field) || !record.data[field.id]">
+              {{ getFieldDisplayValue(field, record) }}
+            </span>
+          </td>
         </tr>
       </tbody>
     </nz-table>

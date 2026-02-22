@@ -1,5 +1,5 @@
 import { Component, OnInit, computed, signal } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -10,12 +10,16 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 
 import { EntityService } from '../../services/entity.service';
 import { EntityRecordService } from '../../services/entity-record.service';
+import { EntityStore } from '../../store/entity.store';
+import { EntityField } from '../../models/entity.model';
+import { EntityRecord } from '../../models/entity-record.model';
 import { generateEntityKey } from '../../services/entity-key.util';
 
 @Component({
   selector: 'app-entity-list-page',
   imports: [
     CommonModule,
+    RouterModule,
     NzButtonModule,
     NzInputModule,
     NzEmptyModule,
@@ -95,7 +99,8 @@ export class EntityListPageComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private entityService: EntityService,
-    private entityRecordService: EntityRecordService
+    private entityRecordService: EntityRecordService,
+    private entityStore: EntityStore
   ) {}
 
   ngOnInit(): void {
@@ -189,5 +194,23 @@ export class EntityListPageComponent implements OnInit {
   getColumnSortOrder(fieldId: string): 'ascend' | 'descend' | null {
     if (this.sortFieldIdSignal() !== fieldId) return null;
     return this.sortOrderSignal() === 'asc' ? 'ascend' : 'descend';
+  }
+
+  getFieldDisplayValue(field: EntityField, record: EntityRecord): string {
+    if (field.type === 'reference' && record.data[field.id]) {
+      return this.entityRecordService.getRecordDisplayName(field.referenceEntityId!, record.data[field.id]);
+    }
+    return record.data[field.id] || '-';
+  }
+
+  isReferenceField(field: EntityField): boolean {
+    return field.type === 'reference';
+  }
+
+  getReferencedEntityRouteKey(field: EntityField): string | null {
+    if (!field.referenceEntityId) return null;
+    const entity = this.entityStore.getById(field.referenceEntityId);
+    if (!entity) return null;
+    return generateEntityKey(entity.name);
   }
 }
