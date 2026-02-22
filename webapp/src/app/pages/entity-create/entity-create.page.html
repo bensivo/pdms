@@ -1,0 +1,41 @@
+<div class="entity-create-container">
+  <div class="page-header">
+    <button nz-button nzType="text" (click)="onClickBackButton()">← Back</button>
+  </div>
+
+  <div *ngIf="entity$()" class="entity-create-content">
+    <h1>New {{ entity$()!.name }}</h1>
+
+    <nz-card class="create-form-card">
+      <form nz-form nzLayout="vertical">
+        <nz-form-item *ngFor="let field of entity$()!.fields; let isFirst = first">
+          <nz-form-label>{{ field.name }}</nz-form-label>
+          <nz-form-control>
+            <textarea
+              *ngIf="field.type === 'long-text'"
+              nz-input
+              [nzAutosize]="{ minRows: 3, maxRows: 6 }"
+              [ngModel]="getFieldValue(field.id)"
+              (ngModelChange)="setFieldValue(field.id, $event)"
+              [name]="field.id"
+              #firstInput>
+            </textarea>
+            <input
+              *ngIf="field.type !== 'long-text'"
+              nz-input
+              [type]="field.type === 'number' ? 'number' : 'text'"
+              [ngModel]="getFieldValue(field.id)"
+              (ngModelChange)="setFieldValue(field.id, $event)"
+              [name]="field.id"
+              #firstInput />
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+
+      <div class="form-actions">
+        <button nz-button nzType="default" (click)="onClickBackButton()">Cancel</button>
+        <button nz-button nzType="primary" (click)="onClickSubmit()">Create</button>
+      </div>
+    </nz-card>
+  </div>
+</div>

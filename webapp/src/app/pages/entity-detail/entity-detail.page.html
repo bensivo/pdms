@@ -1,0 +1,51 @@
+<div class="entity-detail-container">
+  <div class="page-header">
+    <button nz-button nzType="text" (click)="onClickBackButton()">← Back</button>
+  </div>
+
+  <div *ngIf="entity$() && record$()" class="entity-detail-content">
+    <div class="detail-header">
+      <h1>{{ entity$()!.name }}</h1>
+      <div class="detail-actions">
+        <ng-container *ngIf="!isEditMode()">
+          <button nz-button nzType="primary" (click)="onClickEdit()">Edit</button>
+        </ng-container>
+        <ng-container *ngIf="isEditMode()">
+          <button nz-button nzType="default" (click)="onClickCancelEdit()">Cancel</button>
+          <button nz-button nzType="primary" (click)="onClickSave()">Save</button>
+        </ng-container>
+      </div>
+    </div>
+
+    <nz-card class="fields-card">
+      <div class="field-row" *ngFor="let field of entity$()!.fields">
+        <div class="field-label">{{ field.name }}</div>
+        <div class="field-value">
+          <!-- View mode -->
+          <span *ngIf="!isEditMode()">
+            {{ getFieldValue(field.id) || '—' }}
+          </span>
+
+          <!-- Edit mode: long-text gets textarea -->
+          <textarea
+            *ngIf="isEditMode() && field.type === 'long-text'"
+            nz-input
+            [nzAutosize]="{ minRows: 2, maxRows: 6 }"
+            [ngModel]="getEditValue(field.id)"
+            (ngModelChange)="setEditValue(field.id, $event)"
+            [name]="field.id">
+          </textarea>
+
+          <!-- Edit mode: all other types get a standard input -->
+          <input
+            *ngIf="isEditMode() && field.type !== 'long-text'"
+            nz-input
+            [type]="field.type === 'number' ? 'number' : 'text'"
+            [ngModel]="getEditValue(field.id)"
+            (ngModelChange)="setEditValue(field.id, $event)"
+            [name]="field.id" />
+        </div>
+      </div>
+    </nz-card>
+  </div>
+</div>

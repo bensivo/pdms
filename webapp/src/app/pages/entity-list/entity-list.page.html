@@ -3,7 +3,7 @@
     <!-- Header -->
     <div class="list-header">
       <h1>{{ entity$()!.pluralName }}</h1>
-      <button nz-button nzType="primary" nzSize="large">+ New</button>
+      <button nz-button nzType="primary" nzSize="large" (click)="onClickNewButton()">+ New</button>
     </div>
 
     <!-- Toolbar -->
@@ -20,8 +20,14 @@
 
     <!-- Records List -->
     <div class="records-list">
-      <div class="empty-state">
+      <div *ngIf="records$().length === 0" class="empty-state">
         <nz-empty nzNotFoundContent="No records yet"></nz-empty>
+      </div>
+      <div
+        *ngFor="let record of records$()"
+        class="record-row"
+        (click)="onClickRecordRow(record.id)">
+        {{ getRecordLabel(record) }}
       </div>
     </div>
   </div>
