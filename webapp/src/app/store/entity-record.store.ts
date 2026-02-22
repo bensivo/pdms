@@ -1,10 +1,11 @@
 import { Injectable, signal } from '@angular/core';
 
 import { EntityRecord } from '../models/entity-record.model';
+import { MOCK_RECORDS } from './mock-data';
 
 @Injectable({ providedIn: 'root' })
 export class EntityRecordStore {
-    private recordsSignal = signal<EntityRecord[]>([]);
+    private recordsSignal = signal<EntityRecord[]>(MOCK_RECORDS);
     public records$ = this.recordsSignal.asReadonly();
 
     getAll(): EntityRecord[] {

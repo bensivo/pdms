@@ -13,22 +13,59 @@
         class="search-input"
         nzSize="large"
         placeholder="Search..."
-        type="text" />
-      <button nz-button nzSize="large">View Type</button>
-      <button nz-button nzSize="large">Filter</button>
+        type="text"
+        (input)="onFilterChange($event)"
+        [value]="filterTextSignal()" />
+      <button nz-button nzSize="large" (click)="onClickColumnsButton()">Columns</button>
     </div>
 
-    <!-- Records List -->
-    <div class="records-list">
-      <div *ngIf="records$().length === 0" class="empty-state">
-        <nz-empty nzNotFoundContent="No records yet"></nz-empty>
-      </div>
-      <div
-        *ngFor="let record of records$()"
-        class="record-row"
-        (click)="onClickRecordRow(record.id)">
-        {{ getRecordLabel(record) }}
-      </div>
-    </div>
+    <!-- Records Table -->
+    <nz-table
+      #recordTable
+      [nzData]="filteredAndSortedRecords$()"
+      [nzShowPagination]="filteredAndSortedRecords$().length > 20"
+      nzSize="small"
+      class="records-table">
+      <thead>
+        <tr>
+          <th
+            *ngFor="let field of visibleFields$()"
+            (click)="onColumnHeaderClick(field.id)"
+            class="sortable-header"
+            [class.sorted]="sortFieldIdSignal() === field.id && sortOrderSignal() !== null">
+            <span>{{ field.name }}</span>
+            <span class="sort-indicator" *ngIf="sortFieldIdSignal() === field.id && sortOrderSignal() !== null">
+              {{ sortOrderSignal() === 'asc' ? '▲' : '▼' }}
+            </span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let record of recordTable.data"
+          class="record-row"
+          (click)="onClickRecordRow(record.id)">
+          <td *ngFor="let field of visibleFields$()">{{ record.data[field.id] || '-' }}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+
+    <!-- Column Selection Modal -->
+    <nz-modal
+      [(nzVisible)]="isColumnModalOpenSignal"
+      nzTitle="Select Columns"
+      (nzOnOk)="onConfirmColumns()"
+      (nzOnCancel)="onCancelColumns()">
+      <ng-container *nzModalContent>
+        <div class="column-checkbox-list">
+          <div *ngFor="let field of entity$()!.fields" class="column-checkbox-item">
+            <label nz-checkbox
+              [nzChecked]="isPendingFieldVisible(field.id)"
+              (nzCheckedChange)="onTogglePendingColumn(field.id, $event)">
+              {{ field.name }}
+            </label>
+          </div>
+        </div>
+      </ng-container>
+    </nz-modal>
   </div>
 </div>
