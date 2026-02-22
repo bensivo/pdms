@@ -45,9 +45,11 @@
         </tbody>
       </table>
 
-      <nz-card class="display-name-card">
-        <div class="section-header"><h2>Display Name</h2></div>
-        <p class="hint">Choose the field shown when this entity is referenced from another entity.</p>
+      <div class="display-name-section" *ngIf="entity$()!.fields.length > 0">
+        <div class="section-header">
+          <h2>Display Name</h2>
+        </div>
+        <p class="hint-text">Choose the field to use when referencing this entity</p>
         <nz-select
           [ngModel]="entity$()!.displayNameFieldId"
           (ngModelChange)="onChangeDisplayNameField($event)"
@@ -55,7 +57,7 @@
           name="displayNameField">
           <nz-option *ngFor="let f of entity$()!.fields" [nzValue]="f.id" [nzLabel]="f.name"></nz-option>
         </nz-select>
-      </nz-card>
+      </div>
     </nz-card>
   </div>
 
