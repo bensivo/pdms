@@ -95,5 +95,39 @@
     select {
       width: 100%;
     }
+
+    .option-input-group {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+
+      input {
+        flex: 1;
+      }
+    }
+
+    .option-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+
+      .option-tag {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 8px;
+        background: #e6f4ff;
+        border: 1px solid #91caff;
+        border-radius: 4px;
+        font-size: 12px;
+
+        .option-tag-close {
+          color: #8c8c8c;
+
+          &:hover {
+            color: #262626;
+          }
+        }
+      }
+    }
   }
 }

@@ -84,3 +84,28 @@ View backlinks in Entity Details
     G: I have a record with a 'backlink' type, and 'child' records that reference that record
     W: I view the parent in the entity details page
     T: The backlinked entitites all appear in a list
+
+Create an 'option' field
+    G: I have an entity
+    W: I go to configure it, and add a field, then choose the 'option' type
+    T: A text input appears where I can add option values
+    T: I can type a value and press Enter or click "+ Add" to add it
+    T: The value appears as a styled tag below the input
+    T: I can click the × on a tag to remove it
+
+Populate an option field
+    G: I have an entity with a field of type 'option' with values 
+    W: I go to create a record of that entity
+    T: The option field shows a dropdown with all the configured values
+    T: I can select one of the values
+
+View option field in All X page
+    G: I have a record with an option field that has a value selected
+    W: I view that field in the 'All X' page
+    T: The selected option value displays as plain text in the table
+
+Edit option field in Entity Details
+    G: I have a record with an option field
+    W: I go to 'Edit' that entity
+    T: The option field shows a dropdown with all the configured values
+    T: I can select a new value

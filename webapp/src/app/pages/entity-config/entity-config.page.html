@@ -120,6 +120,38 @@
             <nz-option *ngFor="let f of backlinkSourceFields$()" [nzValue]="f.id" [nzLabel]="f.name"></nz-option>
           </nz-select>
         </div>
+
+        <div class="form-group" *ngIf="newFieldType === 'option'">
+          <label>Options</label>
+          <div class="option-input-group">
+            <input
+              nz-input
+              [(ngModel)]="newOptionInputValue"
+              placeholder="Enter option value"
+              (keyup.enter)="onClickAddOptionValue()"
+              name="newOptionInput" />
+            <button
+              nz-button
+              nzType="dashed"
+              (click)="onClickAddOptionValue()"
+              style="margin-left: 8px;">
+              + Add
+            </button>
+          </div>
+          <div class="option-tags" *ngIf="newFieldOptionValuesSignal().length > 0">
+            <span
+              *ngFor="let opt of newFieldOptionValuesSignal(); let i = index"
+              class="option-tag">
+              {{ opt }}
+              <span
+                class="option-tag-close"
+                (click)="onClickRemoveOptionValue(i)"
+                style="cursor: pointer; margin-left: 4px;">
+                ×
+              </span>
+            </span>
+          </div>
+        </div>
       </div>
     </ng-container>
   </nz-modal>

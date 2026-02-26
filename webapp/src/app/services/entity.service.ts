@@ -35,7 +35,8 @@ export class EntityService {
       fieldType: string,
       referenceEntityId?: string,
       backlinkSourceEntityId?: string,
-      backlinkSourceFieldId?: string
+      backlinkSourceFieldId?: string,
+      optionValues?: string[]
   ): void {
     const entity = this.entityStore.getById(entityId);
     if (!entity) return;
@@ -46,7 +47,8 @@ export class EntityService {
       type: fieldType as any,
       referenceEntityId,
       backlinkSourceEntityId,
-      backlinkSourceFieldId
+      backlinkSourceFieldId,
+      optionValues
     };
 
     this.entityStore.update(entityId, {

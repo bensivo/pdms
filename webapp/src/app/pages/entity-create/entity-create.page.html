@@ -22,7 +22,7 @@
               #firstInput>
             </textarea>
             <input
-              *ngIf="field.type !== 'long-text' && field.type !== 'reference'"
+              *ngIf="field.type !== 'long-text' && field.type !== 'reference' && field.type !== 'option'"
               nz-input
               [type]="field.type === 'number' ? 'number' : 'text'"
               [ngModel]="getFieldValue(field.id)"
@@ -40,6 +40,14 @@
                 [nzValue]="opt.value"
                 [nzLabel]="opt.label">
               </nz-option>
+            </nz-select>
+            <nz-select
+              *ngIf="field.type === 'option'"
+              nzPlaceHolder="Select..."
+              [ngModel]="getFieldValue(field.id)"
+              (ngModelChange)="setFieldValue(field.id, $event)"
+              [name]="field.id">
+              <nz-option *ngFor="let val of field.optionValues" [nzValue]="val" [nzLabel]="val"></nz-option>
             </nz-select>
           </nz-form-control>
         </nz-form-item>

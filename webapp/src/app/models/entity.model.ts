@@ -1,4 +1,4 @@
-export type FieldType = 'short-text' | 'long-text' | 'number' | 'reference' | 'backlink';
+export type FieldType = 'short-text' | 'long-text' | 'number' | 'reference' | 'backlink' | 'option';
 
 export interface EntityField {
   id: string;
@@ -7,6 +7,7 @@ export interface EntityField {
   referenceEntityId?: string;       // only when type === 'reference'
   backlinkSourceEntityId?: string;  // only when type === 'backlink'
   backlinkSourceFieldId?: string;   // only when type === 'backlink'
+  optionValues?: string[];          // only when type === 'option'
 }
 
 export interface Entity {

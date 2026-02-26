@@ -2,28 +2,28 @@ import { EntityRecord } from "../models/entity-record.model";
 import { Entity } from "../models/entity.model";
 
 export const MOCK_ENTITIES: Entity[] = [
-        // {
-        //     id: '1',
-        //     name: 'Account',
-        //     pluralName: 'Accounts',
-        //     fields: [
-        //         { id: '1', name: 'Name', type: 'short-text' },
-        //         { id: '2', name: 'Description', type: 'long-text' },
-        //         { id: '3', name: 'Related Leads', type: 'backlink', backlinkSourceEntityId: '2', backlinkSourceFieldId: 'lead-3' },
-        //     ],
-        //     displayNameFieldId: '1'
-        // },
-        // {
-        //     id: '2',
-        //     name: 'Lead',
-        //     pluralName: 'Leads',
-        //     fields: [
-        //         { id: 'lead-1', name: 'Full Name', type: 'short-text' },
-        //         { id: 'lead-2', name: 'Title', type: 'short-text' },
-        //         { id: 'lead-3', name: 'Account', type: 'reference', referenceEntityId: '1' },
-        //     ],
-        //     displayNameFieldId: 'lead-1'
-        // },
+        {
+            id: '1',
+            name: 'Account',
+            pluralName: 'Accounts',
+            fields: [
+                { id: '1', name: 'Name', type: 'short-text' },
+                { id: '2', name: 'Description', type: 'long-text' },
+                { id: '3', name: 'Related Leads', type: 'backlink', backlinkSourceEntityId: '2', backlinkSourceFieldId: 'lead-3' },
+            ],
+            displayNameFieldId: '1'
+        },
+        {
+            id: '2',
+            name: 'Lead',
+            pluralName: 'Leads',
+            fields: [
+                { id: 'lead-1', name: 'Full Name', type: 'short-text' },
+                { id: 'lead-2', name: 'Title', type: 'short-text' },
+                { id: 'lead-3', name: 'Account', type: 'reference', referenceEntityId: '1' },
+            ],
+            displayNameFieldId: 'lead-1'
+        },
 ]
 
 export const MOCK_RECORDS: EntityRecord[] = [

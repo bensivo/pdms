@@ -68,9 +68,18 @@
             </nz-option>
           </nz-select>
 
+          <!-- Edit mode: option fields get select -->
+          <nz-select *ngIf="isEditMode() && field.type === 'option'"
+            nzPlaceHolder="Select..."
+            [ngModel]="getEditValue(field.id)"
+            (ngModelChange)="setEditValue(field.id, $event)"
+            [name]="field.id">
+            <nz-option *ngFor="let val of field.optionValues" [nzValue]="val" [nzLabel]="val"></nz-option>
+          </nz-select>
+
           <!-- Edit mode: all other types get a standard input -->
           <input
-            *ngIf="isEditMode() && field.type !== 'long-text' && field.type !== 'reference'"
+            *ngIf="isEditMode() && field.type !== 'long-text' && field.type !== 'reference' && field.type !== 'option'"
             nz-input
             [type]="field.type === 'number' ? 'number' : 'text'"
             [ngModel]="getEditValue(field.id)"

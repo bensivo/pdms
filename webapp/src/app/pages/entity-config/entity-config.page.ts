@@ -42,6 +42,8 @@ export class EntityConfigPageComponent implements OnInit {
   newFieldReferenceEntityId = '';
   newFieldBacklinkSourceEntityIdSignal = signal<string>('');
   newFieldBacklinkSourceFieldIdSignal = signal<string>('');
+  newFieldOptionValuesSignal = signal<string[]>([]);
+  newOptionInputValue = '';
 
   fieldTypeOptions: { label: string; value: FieldType }[] = [
     { label: 'Short Text', value: 'short-text' },
@@ -49,6 +51,7 @@ export class EntityConfigPageComponent implements OnInit {
     { label: 'Number', value: 'number' },
     { label: 'Reference', value: 'reference' },
     { label: 'Backlink', value: 'backlink' },
+    { label: 'Option', value: 'option' },
   ];
 
   referencableEntities$ = computed(() => {
@@ -96,6 +99,7 @@ export class EntityConfigPageComponent implements OnInit {
     this.newFieldReferenceEntityId = '';
     this.newFieldBacklinkSourceEntityIdSignal.set('');
     this.newFieldBacklinkSourceFieldIdSignal.set('');
+    this.newFieldOptionValuesSignal.set([]);
     this.showAddFieldModal.set(true);
   }
 
@@ -107,13 +111,15 @@ export class EntityConfigPageComponent implements OnInit {
     const referenceEntityId = this.newFieldType === 'reference' ? this.newFieldReferenceEntityId : undefined;
     const backlinkSourceEntityId = this.newFieldType === 'backlink' ? this.newFieldBacklinkSourceEntityIdSignal() : undefined;
     const backlinkSourceFieldId = this.newFieldType === 'backlink' ? this.newFieldBacklinkSourceFieldIdSignal() : undefined;
+    const optionValues = this.newFieldType === 'option' ? this.newFieldOptionValuesSignal() : undefined;
     this.entityService.addField(
         entity.id,
         this.newFieldName,
         this.newFieldType,
         referenceEntityId,
         backlinkSourceEntityId,
-        backlinkSourceFieldId
+        backlinkSourceFieldId,
+        optionValues
     );
     this.showAddFieldModal.set(false);
   }
@@ -134,5 +140,17 @@ export class EntityConfigPageComponent implements OnInit {
     const entity = this.entity$();
     if (!entity) return;
     this.entityService.setDisplayNameField(entity.id, fieldId);
+  }
+
+  onClickAddOptionValue(): void {
+    const value = this.newOptionInputValue.trim();
+    if (value && !this.newFieldOptionValuesSignal().includes(value)) {
+      this.newFieldOptionValuesSignal.update(current => [...current, value]);
+      this.newOptionInputValue = '';
+    }
+  }
+
+  onClickRemoveOptionValue(index: number): void {
+    this.newFieldOptionValuesSignal.update(current => current.filter((_, i) => i !== index));
   }
 }
