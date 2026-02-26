@@ -37,6 +37,16 @@ export class EntityCreatePageComponent implements OnInit, AfterViewInit {
         return entities.find(e => generateEntityKey(e.name) === key);
     });
 
+    editableFields$ = computed(() => {
+        const entity = this.entity$();
+        if (!entity) {
+            return [];
+        }
+
+        // 'backlink' fields are just read-only, so we don't include them in the form
+        return entity.fields.filter(f => f.type !== 'backlink');
+    });
+
     // All form values, keyed by field id
     formData = signal<Record<string, string>>({});
 

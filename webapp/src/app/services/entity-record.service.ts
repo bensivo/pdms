@@ -88,6 +88,21 @@ export class EntityRecordService {
         return record.data[displayFieldId] || recordId;
     }
 
+    /**
+     * Returns all records of sourceEntityId where the field sourceFieldId
+     * points to targetRecordId.
+     *
+     * @param sourceEntityId - The entity that has the reference field
+     * @param sourceFieldId - The specific reference field in that entity
+     * @param targetRecordId - The record ID being referenced
+     * @returns Array of backlinked records
+     */
+    getBacklinkedRecords(sourceEntityId: string, sourceFieldId: string, targetRecordId: string): EntityRecord[] {
+        return this.entityRecordStore.getByEntityId(sourceEntityId).filter(
+            record => record.data[sourceFieldId] === targetRecordId
+        );
+    }
+
     private generateId(): string {
         return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     }

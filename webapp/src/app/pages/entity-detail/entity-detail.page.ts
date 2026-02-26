@@ -12,6 +12,7 @@ import { EntityService } from '../../services/entity.service';
 import { EntityRecordService } from '../../services/entity-record.service';
 import { EntityStore } from '../../store/entity.store';
 import { EntityField } from '../../models/entity.model';
+import { EntityRecord } from '../../models/entity-record.model';
 import { generateEntityKey } from '../../services/entity-key.util';
 
 @Component({
@@ -53,7 +54,7 @@ export class EntityDetailPageComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private entityService: EntityService,
-        private entityRecordService: EntityRecordService,
+        public entityRecordService: EntityRecordService,
         private entityStore: EntityStore
     ) {}
 
@@ -123,6 +124,26 @@ export class EntityDetailPageComponent implements OnInit {
     getReferencedEntityRouteKey(field: EntityField): string | null {
         if (!field.referenceEntityId) return null;
         const entity = this.entityStore.getById(field.referenceEntityId);
+        if (!entity) return null;
+        return generateEntityKey(entity.name);
+    }
+
+    getBacklinkedRecords(field: EntityField): EntityRecord[] {
+        if (!field.backlinkSourceEntityId || !field.backlinkSourceFieldId) {
+            return [];
+        }
+        const record = this.record$();
+        if (!record) return [];
+        return this.entityRecordService.getBacklinkedRecords(
+            field.backlinkSourceEntityId,
+            field.backlinkSourceFieldId,
+            record.id
+        );
+    }
+
+    getBacklinkSourceEntityRouteKey(field: EntityField): string | null {
+        if (!field.backlinkSourceEntityId) return null;
+        const entity = this.entityStore.getById(field.backlinkSourceEntityId);
         if (!entity) return null;
         return generateEntityKey(entity.name);
     }

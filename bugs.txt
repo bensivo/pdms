@@ -1,0 +1,9 @@
+- The "Display Field" lets you choose refernces and backlinks
+
+- The 'long text' input field isn't actaully very long
+
+- Setting 'number' in a field type doesn't restrict the input in add record
+
+- refernce inputs are selects, not typable selects. Could get unwieldy
+
+- Search input in entity-list page doesn't search by reference names

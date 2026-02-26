@@ -98,6 +98,28 @@
             <nz-option *ngFor="let e of referencableEntities$()" [nzValue]="e.id" [nzLabel]="e.pluralName"></nz-option>
           </nz-select>
         </div>
+
+        <div class="form-group" *ngIf="newFieldType === 'backlink'">
+          <label>Source Entity</label>
+          <nz-select
+            [ngModel]="newFieldBacklinkSourceEntityIdSignal()"
+            (ngModelChange)="newFieldBacklinkSourceEntityIdSignal.set($event)"
+            nzPlaceHolder="Select entity"
+            name="backlinkSourceEntity">
+            <nz-option *ngFor="let e of referencableEntities$()" [nzValue]="e.id" [nzLabel]="e.pluralName"></nz-option>
+          </nz-select>
+        </div>
+
+        <div class="form-group" *ngIf="newFieldType === 'backlink'">
+          <label>Source Field</label>
+          <nz-select
+            [ngModel]="newFieldBacklinkSourceFieldIdSignal()"
+            (ngModelChange)="newFieldBacklinkSourceFieldIdSignal.set($event)"
+            nzPlaceHolder="Select field"
+            name="backlinkSourceField">
+            <nz-option *ngFor="let f of backlinkSourceFields$()" [nzValue]="f.id" [nzLabel]="f.name"></nz-option>
+          </nz-select>
+        </div>
       </div>
     </ng-container>
   </nz-modal>

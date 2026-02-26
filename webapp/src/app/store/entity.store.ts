@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { effect, Injectable, signal } from '@angular/core';
 import { Entity } from '../models/entity.model';
 import { MOCK_ENTITIES } from './mock-data';
 
@@ -6,6 +6,12 @@ import { MOCK_ENTITIES } from './mock-data';
 export class EntityStore {
   private entitiesSignal = signal<Entity[]>(MOCK_ENTITIES);
   public entities$ = this.entitiesSignal.asReadonly();
+
+  constructor() {
+    effect(() => {
+      console.log('Entities updated:', this.entitiesSignal());
+    });
+  }
 
   getAll(): Entity[] {
     return this.entitiesSignal();

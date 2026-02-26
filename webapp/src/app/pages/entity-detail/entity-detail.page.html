@@ -1,6 +1,6 @@
 <div class="entity-detail-container">
   <div class="page-header">
-    <button nz-button nzType="text" (click)="onClickBackButton()">← Back</button>
+    <button nz-button nzType="text" (click)="onClickBackButton()">← All {{entity$()!.pluralName}}</button>
   </div>
 
   <div *ngIf="entity$() && record$()" class="entity-detail-content">
@@ -18,8 +18,9 @@
     </div>
 
     <nz-card class="fields-card">
-      <div class="field-row" *ngFor="let field of entity$()!.fields">
-        <div class="field-label">{{ field.name }}</div>
+      <ng-container *ngFor="let field of entity$()!.fields">
+        <div class="field-row" *ngIf="isEditMode() ? field.type !== 'backlink' : true">
+          <div class="field-label">{{ field.name }}</div>
         <div class="field-value">
           <!-- View mode -->
           <ng-container *ngIf="!isEditMode()">
@@ -29,8 +30,17 @@
               {{ getReferencedRecordDisplayName(field, getFieldValue(field.id)) }}
             </a>
             <span *ngIf="field.type === 'reference' && !getFieldValue(field.id)">—</span>
-            <!-- Non-reference fields: show as text -->
-            <span *ngIf="field.type !== 'reference'">
+            <!-- Backlink field: show as list of links -->
+            <div *ngIf="field.type === 'backlink'" class="backlink-list">
+              <div *ngIf="getBacklinkedRecords(field).length === 0" class="empty-backlinks">No linked records</div>
+              <a *ngFor="let backlinkRecord of getBacklinkedRecords(field)"
+                [routerLink]="['/entity', getBacklinkSourceEntityRouteKey(field), backlinkRecord.id]"
+                class="backlink-item">
+                {{ entityRecordService.getRecordDisplayName(field.backlinkSourceEntityId!, backlinkRecord.id) }}
+              </a>
+            </div>
+            <!-- Non-reference, non-backlink fields: show as text -->
+            <span *ngIf="field.type !== 'reference' && field.type !== 'backlink'">
               {{ getFieldValue(field.id) || '—' }}
             </span>
           </ng-container>
@@ -67,7 +77,8 @@
             (ngModelChange)="setEditValue(field.id, $event)"
             [name]="field.id" />
         </div>
-      </div>
+        </div>
+      </ng-container>
     </nz-card>
   </div>
 </div>

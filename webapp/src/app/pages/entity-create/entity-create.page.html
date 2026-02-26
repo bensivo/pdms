@@ -8,9 +8,10 @@
 
     <nz-card class="create-form-card">
       <form nz-form nzLayout="vertical">
-        <nz-form-item *ngFor="let field of entity$()!.fields; let isFirst = first">
-          <nz-form-label>{{ field.name }}</nz-form-label>
-          <nz-form-control>
+        <!-- <nz-form-item *ngFor="let field of entity$()!.fields; let isFirst = first" [ngIf]="field.type !== 'backlink'"> -->
+        <nz-form-item *ngFor="let field of editableFields$(); let isFirst = first">
+          <nz-form-label >{{ field.name }}</nz-form-label>
+          <nz-form-control >
             <textarea
               *ngIf="field.type === 'long-text'"
               nz-input

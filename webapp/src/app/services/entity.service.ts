@@ -29,7 +29,14 @@ export class EntityService {
     return entity;
   }
 
-  addField(entityId: string, fieldName: string, fieldType: string, referenceEntityId?: string): void {
+  addField(
+      entityId: string,
+      fieldName: string,
+      fieldType: string,
+      referenceEntityId?: string,
+      backlinkSourceEntityId?: string,
+      backlinkSourceFieldId?: string
+  ): void {
     const entity = this.entityStore.getById(entityId);
     if (!entity) return;
 
@@ -37,7 +44,9 @@ export class EntityService {
       id: this.generateId(),
       name: fieldName,
       type: fieldType as any,
-      referenceEntityId
+      referenceEntityId,
+      backlinkSourceEntityId,
+      backlinkSourceFieldId
     };
 
     this.entityStore.update(entityId, {

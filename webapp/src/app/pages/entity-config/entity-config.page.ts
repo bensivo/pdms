@@ -40,18 +40,34 @@ export class EntityConfigPageComponent implements OnInit {
   newFieldName = '';
   newFieldType: FieldType = 'short-text';
   newFieldReferenceEntityId = '';
+  newFieldBacklinkSourceEntityIdSignal = signal<string>('');
+  newFieldBacklinkSourceFieldIdSignal = signal<string>('');
 
   fieldTypeOptions: { label: string; value: FieldType }[] = [
     { label: 'Short Text', value: 'short-text' },
     { label: 'Long Text', value: 'long-text' },
     { label: 'Number', value: 'number' },
     { label: 'Reference', value: 'reference' },
+    { label: 'Backlink', value: 'backlink' },
   ];
 
   referencableEntities$ = computed(() => {
     const entity = this.entity$();
     if (!entity) return [];
     return this.entityService.entities$().filter(e => e.id !== entity.id);
+  });
+
+  backlinkSourceFields$ = computed(() => {
+    const sourceEntityId = this.newFieldBacklinkSourceEntityIdSignal();
+    if (!sourceEntityId) return [];
+    const currentEntity = this.entity$();
+    if (!currentEntity) return [];
+    const sourceEntity = this.entityService.getById(sourceEntityId);
+    if (!sourceEntity) return [];
+    // Return reference fields in the source entity that point to the current entity
+    return sourceEntity.fields.filter(
+        f => f.type === 'reference' && f.referenceEntityId === currentEntity.id
+    );
   });
 
   constructor(
@@ -78,6 +94,8 @@ export class EntityConfigPageComponent implements OnInit {
     this.newFieldName = '';
     this.newFieldType = 'short-text';
     this.newFieldReferenceEntityId = '';
+    this.newFieldBacklinkSourceEntityIdSignal.set('');
+    this.newFieldBacklinkSourceFieldIdSignal.set('');
     this.showAddFieldModal.set(true);
   }
 
@@ -87,7 +105,16 @@ export class EntityConfigPageComponent implements OnInit {
       return;
     }
     const referenceEntityId = this.newFieldType === 'reference' ? this.newFieldReferenceEntityId : undefined;
-    this.entityService.addField(entity.id, this.newFieldName, this.newFieldType, referenceEntityId);
+    const backlinkSourceEntityId = this.newFieldType === 'backlink' ? this.newFieldBacklinkSourceEntityIdSignal() : undefined;
+    const backlinkSourceFieldId = this.newFieldType === 'backlink' ? this.newFieldBacklinkSourceFieldIdSignal() : undefined;
+    this.entityService.addField(
+        entity.id,
+        this.newFieldName,
+        this.newFieldType,
+        referenceEntityId,
+        backlinkSourceEntityId,
+        backlinkSourceFieldId
+    );
     this.showAddFieldModal.set(false);
   }
 

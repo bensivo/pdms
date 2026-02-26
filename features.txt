@@ -1,0 +1,14 @@
+Future features (unordered):
+- create a separate 'backlog' view , which allows users to add a bunch of entites, then order them in some way. 
+    - For sprint planning, backlog grooming
+- Wtihin 'new entity' add ability to 'Save and create another'
+- Add ability to bulk-edit the same field on a bunch of items. For workflows like mass RICE prioritization
+- Add a new field type 'option', which is selected from a list of values
+- Add a backend
+- Export and import to/from excel or CSV
+- Split panel view, instead of just a table
+- Make table columns resizable
+- Button to delete records
+- Button to delete records, and all children 
+- Add "list" field types, lists of text items, lists of numbers, lists of references
+- in the entity-list page, if showign a backlink type, let the user expand the list somehow to see all of them? 
