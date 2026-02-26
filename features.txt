@@ -1,15 +1,13 @@
-Future features (unordered):
-- Add a new field type 'option', which is selected from a list of values
+Must have features:
+- Add ability to bulk-edit a bunch of records of the same type, in a spreadsheet view 
+- Button to delete a record
+- Add "list" field types, lists of text items, lists of numbers, lists of references, lists of options
 - create a separate 'backlog' view , which allows users to add a bunch of entites, then order them in some way. 
     - For sprint planning, backlog grooming
-- Within 'new entity' add ability to 'Save and create another'
-- Add ability to bulk-edit a bunch of records of the same type, in a spreadsheet view (maybe selecting the columns you care about)
-- Add ability to bulk-create a bunch of records of the same type, in a spread-sheet view
 - Add a backend
+
+Nice to have features:
 - Export and import to/from excel or CSV
 - Split panel view, instead of just a table
 - Make table columns resizable
-- Button to delete records
-- Button to delete records, and all children 
-- Add "list" field types, lists of text items, lists of numbers, lists of references
 - in the entity-list page, if showign a backlink type, let the user expand the list somehow to see all of them? 
