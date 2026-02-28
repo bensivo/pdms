@@ -6,7 +6,6 @@ A reprsentative user journey, for proejct managemnet, to help us hash out key fe
 3. Create records for all your team members, all your teams, and link them together
 5. Create a bunch of projects
 6. For each project, create a bunch of tasks
-   - NOTE: Best done in a spreadsheet-like view
 7. Create a list-view, to start organizing tasks in a backlog
 8. Work out of this list-view in backlog refinement
    - NOTE: How to do discussions? A "threads" field type? 
@@ -19,7 +18,6 @@ A reprsentative user journey, for proejct managemnet, to help us hash out key fe
 ## Gaps right now (Feb 28)
 - big: Can't do custom ordering in a backlog
 - med: No split view, quickly edit 1 field while still seeing all of them
-- med: I can't add many tasks to a single project quickly
 - med: It'll show me all projects, even if there are 1000 closed and just 5 open
 - small: Can't make custom views, only tables
 - med: Table view always shows all columns

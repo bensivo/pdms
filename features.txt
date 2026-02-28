@@ -1,12 +1,11 @@
 Features in order:
-- feature: delete a record
+- feature: a separate 'backlog' view , which allows users to add a bunch of entites, then order them in some way.
+- feature: a separate 'view' page, which lets users make specific SQL queries and just see that
 - feature: reorder fields in an entity configuration
-- feature: A dynamic field using SQL, like "tickets assigned to this person which are in TODO or IN PROGRESS"
-- feature: A dynamic 'reference' to only show items that meet certain criteria
+- feature: In 'reference' fields, only show items that meet certain criteria
 - tweak: reference uses plural name of entity, not singular
 - bug: column selection doesn't persist
 - feature: Add ability to bulk-edit a bunch of records of the same type, in a spreadsheet view 
-- feature: a separate 'backlog' view , which allows users to add a bunch of entites, then order them in some way. 
 - feature: Add a backend
 - feature: Add helpertext/descriptions to fields, for inputs
 - feature: Split panel view, instead of just a table
