@@ -50,6 +50,10 @@ export class EntityDetailPageComponent implements OnInit {
     // Working copy of data during edit. Initialized when edit mode is entered.
     editData = signal<Record<string, string>>({});
 
+    // Cache for reference-list values to avoid infinite change detection loops
+    private refListValueCache = '';
+    private refListValueCacheArray: string[] = [];
+
     constructor(
         private route: ActivatedRoute,
         private router: Router,
@@ -126,6 +130,32 @@ export class EntityDetailPageComponent implements OnInit {
         const entity = this.entityStore.getById(field.referenceEntityId);
         if (!entity) return null;
         return generateEntityKey(entity.name);
+    }
+
+    getRefListValues(fieldId: string): string[] {
+        const value = this.getEditValue(fieldId);
+        // Cache the array to avoid creating new references on every change detection cycle
+        if (value !== this.refListValueCache) {
+            this.refListValueCache = value;
+            this.refListValueCacheArray = value ? value.split(',') : [];
+        }
+        return this.refListValueCacheArray;
+    }
+
+    setRefListValues(fieldId: string, values: string[]): void {
+        const joined = values.join(',');
+        this.setEditValue(fieldId, joined);
+    }
+
+    getRefListViewItems(field: EntityField): { label: string; id: string; routeKey: string | null }[] {
+        const value = this.getFieldValue(field.id);
+        if (!value) return [];
+        const ids = value.split(',');
+        return ids.map(id => ({
+            id,
+            label: this.entityRecordService.getRecordDisplayName(field.referenceEntityId!, id),
+            routeKey: this.getReferencedEntityRouteKey(field)
+        }));
     }
 
     getBacklinkedRecords(field: EntityField): EntityRecord[] {

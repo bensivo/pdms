@@ -50,6 +50,7 @@ export class EntityConfigPageComponent implements OnInit {
     { label: 'Long Text', value: 'long-text' },
     { label: 'Number', value: 'number' },
     { label: 'Reference', value: 'reference' },
+    { label: 'Reference List', value: 'reference-list' },
     { label: 'Backlink', value: 'backlink' },
     { label: 'Option', value: 'option' },
   ];
@@ -69,7 +70,7 @@ export class EntityConfigPageComponent implements OnInit {
     if (!sourceEntity) return [];
     // Return reference fields in the source entity that point to the current entity
     return sourceEntity.fields.filter(
-        f => f.type === 'reference' && f.referenceEntityId === currentEntity.id
+        f => (f.type === 'reference' || f.type === 'reference-list') && f.referenceEntityId === currentEntity.id
     );
   });
 
@@ -108,7 +109,7 @@ export class EntityConfigPageComponent implements OnInit {
     if (!entity || !this.newFieldName) {
       return;
     }
-    const referenceEntityId = this.newFieldType === 'reference' ? this.newFieldReferenceEntityId : undefined;
+    const referenceEntityId = (this.newFieldType === 'reference' || this.newFieldType === 'reference-list') ? this.newFieldReferenceEntityId : undefined;
     const backlinkSourceEntityId = this.newFieldType === 'backlink' ? this.newFieldBacklinkSourceEntityIdSignal() : undefined;
     const backlinkSourceFieldId = this.newFieldType === 'backlink' ? this.newFieldBacklinkSourceFieldIdSignal() : undefined;
     const optionValues = this.newFieldType === 'option' ? this.newFieldOptionValuesSignal() : undefined;

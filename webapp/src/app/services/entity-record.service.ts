@@ -90,7 +90,7 @@ export class EntityRecordService {
 
     /**
      * Returns all records of sourceEntityId where the field sourceFieldId
-     * points to targetRecordId.
+     * points to targetRecordId. Supports both reference and reference-list field types.
      *
      * @param sourceEntityId - The entity that has the reference field
      * @param sourceFieldId - The specific reference field in that entity
@@ -98,9 +98,28 @@ export class EntityRecordService {
      * @returns Array of backlinked records
      */
     getBacklinkedRecords(sourceEntityId: string, sourceFieldId: string, targetRecordId: string): EntityRecord[] {
-        return this.entityRecordStore.getByEntityId(sourceEntityId).filter(
-            record => record.data[sourceFieldId] === targetRecordId
-        );
+        const sourceEntity = this.entityStore.getById(sourceEntityId);
+        if (!sourceEntity) return [];
+
+        const field = sourceEntity.fields.find(f => f.id === sourceFieldId);
+        if (!field) return [];
+
+        return this.entityRecordStore.getByEntityId(sourceEntityId).filter(record => {
+            const fieldValue = record.data[sourceFieldId];
+            if (!fieldValue) return false;
+
+            // Handle reference field: exact match
+            if (field.type === 'reference') {
+                return fieldValue === targetRecordId;
+            }
+
+            // Handle reference-list field: check if targetRecordId is in comma-separated list
+            if (field.type === 'reference-list') {
+                return fieldValue.split(',').includes(targetRecordId);
+            }
+
+            return false;
+        });
     }
 
     private generateId(): string {

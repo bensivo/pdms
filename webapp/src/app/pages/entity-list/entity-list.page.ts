@@ -200,11 +200,31 @@ export class EntityListPageComponent implements OnInit {
     if (field.type === 'reference' && record.data[field.id]) {
       return this.entityRecordService.getRecordDisplayName(field.referenceEntityId!, record.data[field.id]);
     }
-    return record.data[field.id] || '-';
+    if (field.type === 'reference-list' && record.data[field.id]) {
+      const ids = record.data[field.id].split(',');
+      const names = ids.map(id => this.entityRecordService.getRecordDisplayName(field.referenceEntityId!, id));
+      return names.join(', ');
+    }
+    return record.data[field.id] || '—';
   }
 
   isReferenceField(field: EntityField): boolean {
     return field.type === 'reference';
+  }
+
+  isReferenceListField(field: EntityField): boolean {
+    return field.type === 'reference-list';
+  }
+
+  getRefListItems(field: EntityField, record: EntityRecord): { label: string; id: string; routeKey: string | null }[] {
+    const value = record.data[field.id];
+    if (!value) return [];
+    const ids = value.split(',');
+    return ids.map(id => ({
+      id,
+      label: this.entityRecordService.getRecordDisplayName(field.referenceEntityId!, id),
+      routeKey: this.getReferencedEntityRouteKey(field)
+    }));
   }
 
   getReferencedEntityRouteKey(field: EntityField): string | null {

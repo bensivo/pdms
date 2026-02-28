@@ -50,6 +50,10 @@ export class EntityCreatePageComponent implements OnInit, AfterViewInit {
     // All form values, keyed by field id
     formData = signal<Record<string, string>>({});
 
+    // Cache for reference-list values to avoid infinite change detection loops
+    private refListValueCache = '';
+    private refListValueCacheArray: string[] = [];
+
     @ViewChild('firstInput') firstInput: any;
 
     constructor(
@@ -97,6 +101,21 @@ export class EntityCreatePageComponent implements OnInit, AfterViewInit {
 
     setFieldValue(fieldId: string, value: string): void {
         this.formData.update(current => ({ ...current, [fieldId]: value }));
+    }
+
+    getRefListValues(fieldId: string): string[] {
+        const value = this.getFieldValue(fieldId);
+        // Cache the array to avoid creating new references on every change detection cycle
+        if (value !== this.refListValueCache) {
+            this.refListValueCache = value;
+            this.refListValueCacheArray = value ? value.split(',') : [];
+        }
+        return this.refListValueCacheArray;
+    }
+
+    setRefListValues(fieldId: string, values: string[]): void {
+        const joined = values.join(',');
+        this.setFieldValue(fieldId, joined);
     }
 
     onClickBackButton(): void {

@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { effect, Injectable, signal } from '@angular/core';
 
 import { EntityRecord } from '../models/entity-record.model';
 import { MOCK_RECORDS } from './mock-data';
@@ -7,6 +7,12 @@ import { MOCK_RECORDS } from './mock-data';
 export class EntityRecordStore {
     private recordsSignal = signal<EntityRecord[]>(MOCK_RECORDS);
     public records$ = this.recordsSignal.asReadonly();
+
+    constructor() {
+        effect(() => {
+            console.log('Entity records updated:', this.recordsSignal());
+        })
+    }
 
     getAll(): EntityRecord[] {
         return this.recordsSignal();

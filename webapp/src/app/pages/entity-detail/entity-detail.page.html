@@ -19,7 +19,7 @@
 
     <nz-card class="fields-card">
       <ng-container *ngFor="let field of entity$()!.fields">
-        <div class="field-row" *ngIf="isEditMode() ? field.type !== 'backlink' : true">
+        <div class="field-row" *ngIf="!isEditMode() || field.type !== 'backlink'">
           <div class="field-label">{{ field.name }}</div>
         <div class="field-value">
           <!-- View mode -->
@@ -39,8 +39,17 @@
                 {{ entityRecordService.getRecordDisplayName(field.backlinkSourceEntityId!, backlinkRecord.id) }}
               </a>
             </div>
-            <!-- Non-reference, non-backlink fields: show as text -->
-            <span *ngIf="field.type !== 'reference' && field.type !== 'backlink'">
+            <!-- Reference list field: show as list of links -->
+            <div *ngIf="field.type === 'reference-list'" class="backlink-list">
+              <div *ngIf="getRefListViewItems(field).length === 0" class="empty-backlinks">—</div>
+              <a *ngFor="let item of getRefListViewItems(field)"
+                [routerLink]="['/entity', item.routeKey, item.id]"
+                class="backlink-item">
+                {{ item.label }}
+              </a>
+            </div>
+            <!-- Basic fields: show as text -->
+            <span *ngIf="field.type === 'short-text' || field.type === 'long-text' || field.type === 'number' || field.type === 'option'">
               {{ getFieldValue(field.id) || '—' }}
             </span>
           </ng-container>
@@ -77,9 +86,23 @@
             <nz-option *ngFor="let val of field.optionValues" [nzValue]="val" [nzLabel]="val"></nz-option>
           </nz-select>
 
+          <!-- Edit mode: reference-list fields get multi-select -->
+          <nz-select *ngIf="isEditMode() && field.type === 'reference-list'"
+            nzMode="multiple"
+            nzPlaceHolder="Select..."
+            [ngModel]="getRefListValues(field.id)"
+            (ngModelChange)="setRefListValues(field.id, $event)"
+            [name]="field.id">
+            <nz-option
+              *ngFor="let opt of getReferencedRecordOptions(field)"
+              [nzValue]="opt.value"
+              [nzLabel]="opt.label">
+            </nz-option>
+          </nz-select>
+
           <!-- Edit mode: all other types get a standard input -->
           <input
-            *ngIf="isEditMode() && field.type !== 'long-text' && field.type !== 'reference' && field.type !== 'option'"
+            *ngIf="isEditMode() && (field.type === 'short-text' || field.type === 'number')"
             nz-input
             [type]="field.type === 'number' ? 'number' : 'text'"
             [ngModel]="getEditValue(field.id)"
