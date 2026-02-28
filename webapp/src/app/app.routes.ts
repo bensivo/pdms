@@ -5,6 +5,7 @@ import { EntityConfigPageComponent } from './pages/entity-config/entity-config.p
 import { EntityListPageComponent } from './pages/entity-list/entity-list.page';
 import { EntityCreatePageComponent } from './pages/entity-create/entity-create.page';
 import { EntityDetailPageComponent } from './pages/entity-detail/entity-detail.page';
+import { EntityBulkCreatePageComponent } from './pages/entity-bulk-create/entity-bulk-create.page';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -12,6 +13,7 @@ export const routes: Routes = [
   { path: 'workspace-config', component: WorkspaceConfigPageComponent },
   { path: 'workspace-config/entity/:key', component: EntityConfigPageComponent },
   { path: 'entity-create/:key', component: EntityCreatePageComponent },
+  { path: 'entity-bulk-create/:key', component: EntityBulkCreatePageComponent },
   { path: 'entity/:key/:id', component: EntityDetailPageComponent },
   { path: 'entity/:key', component: EntityListPageComponent }
 ];

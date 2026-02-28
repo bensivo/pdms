@@ -17,9 +17,7 @@ A reprsentative user journey, for proejct managemnet, to help us hash out key fe
 
 
 ## Gaps right now (Feb 28)
-- big: Can't put one person on multiple teams, or multiple people on one task
 - big: Can't do custom ordering in a backlog
-- big: Can't delete a record
 - med: No split view, quickly edit 1 field while still seeing all of them
 - med: I can't add many tasks to a single project quickly
 - med: It'll show me all projects, even if there are 1000 closed and just 5 open

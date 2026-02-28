@@ -129,6 +129,13 @@ export class EntityListPageComponent implements OnInit {
     }
   }
 
+  onClickBulkCreateButton(): void {
+    const entity = this.entity$();
+    if (entity) {
+      this.router.navigate(['/entity-bulk-create', generateEntityKey(entity.name)]);
+    }
+  }
+
   onClickRecordRow(recordId: string): void {
     const entity = this.entity$();
     if (entity) {
