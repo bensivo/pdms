@@ -1,11 +1,12 @@
 Features in order:
-- feature: a separate 'backlog' view , which allows users to add a bunch of entites, then order them in some way.
+- feature: bulk edit view, using the same Ui as bulk-create, but iwth fields pre-populated from selected entities
+- feature: a separate 'backlog' list, which allows users to maintain a custom ordering of items
+- tweak: Global 'new record' form, which lets you select the entity type at top, like Jira. 
+- tweak: Make all selects typeahead selects, for when we're at scale. 
 - feature: a separate 'view' page, which lets users make specific SQL queries and just see that
 - feature: reorder fields in an entity configuration
-- feature: In 'reference' fields, only show items that meet certain criteria
 - tweak: reference uses plural name of entity, not singular
 - bug: column selection doesn't persist
-- feature: Add ability to bulk-edit a bunch of records of the same type, in a spreadsheet view 
 - feature: Add a backend
 - feature: Add helpertext/descriptions to fields, for inputs
 - feature: Split panel view, instead of just a table
