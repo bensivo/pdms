@@ -14,6 +14,7 @@ import { generateEntityKey } from '../../services/entity-key.util';
 import { TemplateService, TemplateType } from '../../services/template.service';
 import { EntityStore } from '../../store/entity.store';
 import { EntityRecordStore } from '../../store/entity-record.store';
+import { ImportExportService } from '../../services/import-export.service';
 
 @Component({
   selector: 'app-workspace-config-page',
@@ -47,7 +48,8 @@ export class WorkspaceConfigPageComponent {
     private entityService: EntityService,
     private templateService: TemplateService,
     private entityStore: EntityStore,
-    private entityRecordStore: EntityRecordStore
+    private entityRecordStore: EntityRecordStore,
+    private importExportService: ImportExportService
   ) {
     this.availableTemplates.set(this.templateService.getAvailableTemplates());
   }
@@ -128,5 +130,53 @@ export class WorkspaceConfigPageComponent {
 
   onClickCancelTemplateConfirm(): void {
     this.showTemplateConfirmModal.set(false);
+  }
+
+  onClickExportButton(): void {
+    const entities = this.entityStore.getAll();
+    const records = this.entityRecordStore.getAll();
+    const exportData = this.importExportService.exportToJson(entities, records);
+    const timestamp = new Date().toISOString().split('T')[0];
+    this.importExportService.downloadExport(exportData, `pdms-export-${timestamp}.json`);
+  }
+
+  onClickImportButton(): void {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.onchange = (event: any) => {
+      const file = event.target.files?.[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        try {
+          const importData = this.importExportService.parseImportFile(e.target.result);
+
+          // Clear existing data
+          this.entityStore.getAll().forEach(entity => {
+            this.entityService.deleteEntity(entity.id);
+          });
+          this.entityRecordStore.getAll().forEach(record => {
+            this.entityRecordStore.remove(record.id);
+          });
+
+          // Load imported data
+          importData.entities.forEach(entity => {
+            this.entityStore.add(entity);
+          });
+
+          importData.records.forEach(record => {
+            this.entityRecordStore.add(record);
+          });
+
+          alert('Data imported successfully!');
+        } catch (error) {
+          alert(`Import failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        }
+      };
+      reader.readAsText(file);
+    };
+    input.click();
   }
 }
