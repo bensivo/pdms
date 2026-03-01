@@ -7,7 +7,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "pdms": {
+    "dewey-dm": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -67,10 +67,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "pdms:build:production"
+              "buildTarget": "dewey-dm:build:production"
             },
             "development": {
-              "buildTarget": "pdms:build:development"
+              "buildTarget": "dewey-dm:build:development"
             }
           },
           "defaultConfiguration": "development"

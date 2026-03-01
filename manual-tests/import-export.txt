@@ -1,7 +1,7 @@
 Export workspace data
     G: A workspace with entities, fields, and records
     W: I go to Workspace Config and click "Export Data"
-    T: A JSON file downloads with filename pattern "pdms-export-YYYY-MM-DD.json"
+    T: A JSON file downloads with filename pattern "dewey-dm-export-YYYY-MM-DD.json"
     T: The file contains version, exportedAt, entities array, and records array
     T: All my entities and their configurations are in the file
     T: All my records and their data are in the file

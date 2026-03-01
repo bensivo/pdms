@@ -1,6 +1,6 @@
-# PDMS - Product Data Management System
+# Dewey DM
 
-A configurable web-based application for managing data and documents using Angular and NG-Zorro.
+A flexible, configurable data management system that adapts to your workflow—like a CRM, ERP, or project management tool. Built with Angular and NG-Zorro. Inspired by the Dewey Decimal System's organizational principles.
 
 ## Project Setup
 

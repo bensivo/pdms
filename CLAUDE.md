@@ -1,7 +1,7 @@
 # Claude.md
 
 ## Project Overview
-This project is a web-based application for managing data and documents. It's intended to be like a general purpose, configurable CRM, ERP, etc. 
+**Dewey DM** is a web-based application for managing data and documents. It's intended to be like a general purpose, configurable CRM, ERP, etc. 
 
 Users can configure this app with any number of entities, with fields, links, and data, then start managing sets of those entiites. Entities could be things like 'accounts', 'leads', in a CRM workflow, or 'projects', 'tasks', in a project management workflow. 
 

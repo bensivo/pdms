@@ -28,7 +28,7 @@ export class ImportExportService {
     /**
      * Download exported data as a JSON file
      */
-    downloadExport(data: ExportData, filename: string = 'pdms-export.json'): void {
+    downloadExport(data: ExportData, filename: string = 'dewey-dm-export.json'): void {
         const jsonString = JSON.stringify(data, null, 2);
         const blob = new Blob([jsonString], { type: 'application/json' });
         const url = URL.createObjectURL(blob);

@@ -137,7 +137,7 @@ export class WorkspaceConfigPageComponent {
     const records = this.entityRecordStore.getAll();
     const exportData = this.importExportService.exportToJson(entities, records);
     const timestamp = new Date().toISOString().split('T')[0];
-    this.importExportService.downloadExport(exportData, `pdms-export-${timestamp}.json`);
+    this.importExportService.downloadExport(exportData, `dewey-dm-export-${timestamp}.json`);
   }
 
   onClickImportButton(): void {
